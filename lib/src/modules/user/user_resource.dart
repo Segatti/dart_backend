@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dart_backend/src/core/interfaces/service/encrypt_service.dart';
 import 'package:dart_backend/src/modules/user/domain/user.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
@@ -48,6 +49,9 @@ FutureOr<Response> _createUser(ModularArguments args, Injector injector) async {
   final Map<String, dynamic> data = args.data;
   data.remove("id");
 
+  final encryptService = injector.get<IEncryptService>();
+  data['password'] = encryptService.encrypt(data['password']);
+  
   final database = injector.get<IRemoteDatabase>();
   final result = await database.query(
     'insert into "User" (name, email, password, "typeUser") values (@name, @email, @password, @typeUser)',

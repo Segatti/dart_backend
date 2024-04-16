@@ -1,3 +1,5 @@
+import 'package:dart_backend/src/core/interfaces/service/encrypt_service.dart';
+import 'package:dart_backend/src/core/service/encrypt_service.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
@@ -13,6 +15,7 @@ class AppModule extends Module {
   List<Bind> get binds => [
         Bind.instance<IEnvService>(EnvService.instance),
         Bind.singleton<IRemoteDatabase>((i) => PostgresDatabase(i())),
+        Bind.singleton<IEncryptService>((i) => EncryptService()),
       ];
 
   @override
