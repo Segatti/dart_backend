@@ -10,7 +10,19 @@ Future<Handler> startShelfModular() async {
     middlewares: [
       logRequests(),
       corsHeaders(),
+      setResponseJson(),
     ],
   );
   return handler;
 }
+
+Middleware setResponseJson() => createMiddleware(
+      responseHandler: (res) {
+        return res.change(
+          headers: {
+            "content-type": "application/json",
+            ...res.headers,
+          },
+        );
+      },
+    );
