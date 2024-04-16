@@ -8,6 +8,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  postgres: ^3.2.0
   shelf: ^1.4.1
   shelf_modular: ^2.1.0
   shelf_swagger_ui: ^1.0.0+2

@@ -1,8 +1,11 @@
 import 'dart:io';
 
-class EnvService {
-  static EnvService instance = EnvService._();
+import 'package:dart_backend/src/core/interfaces/service/env_service.dart';
+
+class EnvService implements IEnvService {
   final Map<String, String> map = {};
+  
+  static EnvService instance = EnvService._();
   EnvService._() {
     _init();
   }
@@ -17,6 +20,7 @@ class EnvService {
     }
   }
 
+  @override
   String? operator [](String key) {
     return map[key];
   }
