@@ -4,8 +4,41 @@ info:
   version: "1.0.10"
   title: "Swagger Test"
 servers:
-  - url: http://my-service.info
+  - url: http://localhost:8080/
     description: Remote server
 tags:
 - name: "user"
   description: "Access to User"
+
+paths:
+  /user:
+    get:
+      tags:
+        - "user"
+      description: "Get all users"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/User"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        typeUser:
+          type: string
+          enum:
+            - "user"
+            - "immobile"

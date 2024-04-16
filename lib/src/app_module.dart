@@ -6,6 +6,7 @@ import 'core/interfaces/database/remote_database.dart';
 import 'core/interfaces/service/env_service.dart';
 import 'core/service/env_service.dart';
 import 'modules/user/user_resource.dart';
+import 'swagger_handler.dart';
 
 class AppModule extends Module {
   @override
@@ -17,6 +18,8 @@ class AppModule extends Module {
   @override
   List<ModularRoute> get routes => [
         Route.get("/", () => Response.ok("body")),
+        // /** posix para dizer que pode ser qualquer coisa depois do /
+        Route.get("/documentation/**", startSwagger),
         Route.resource(UserResource()),
       ];
 }
