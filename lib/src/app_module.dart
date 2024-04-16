@@ -7,6 +7,7 @@ import 'core/database/postgres_database.dart';
 import 'core/interfaces/database/remote_database.dart';
 import 'core/interfaces/service/env_service.dart';
 import 'core/service/env_service.dart';
+import 'modules/auth/auth_resource.dart';
 import 'modules/user/user_resource.dart';
 import 'swagger_handler.dart';
 
@@ -20,9 +21,10 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        Route.get("/", () => Response.ok("body")),
+        Route.get("/", () => Response.ok("Backend!")),
         // /** posix para dizer que pode ser qualquer coisa depois do /
         Route.get("/documentation/**", startSwagger),
         Route.resource(UserResource()),
+        Route.resource(AuthResource()),
       ];
 }
