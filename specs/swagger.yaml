@@ -15,7 +15,7 @@ paths:
     get:
       tags:
         - "user"
-      description: "Get all users"
+      summary: "Get all users"
       responses:
         "200":
           description: ""
@@ -25,6 +25,103 @@ paths:
                 type: array
                 items:
                   $ref: "#components/schemas/User"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+    post:
+      tags:
+        - "user"
+      summary: "Create new user"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/UserCreate"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+    put:
+      tags:
+        - "user"
+      summary: "Update user"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/User"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+  /user/{id}:
+    get:
+      tags:
+        - "user"
+      summary: "Get one user"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+    delete:
+      tags:
+        - "user"
+      summary: "Delete one user"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            text/plain:
+              schema:
+                type: string
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
 
 components:
   schemas:
@@ -42,3 +139,22 @@ components:
           enum:
             - "user"
             - "immobile"
+    UserCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        typeUser:
+          type: string
+          enum:
+            - "user"
+            - "immobile"
+    BackendException:
+      type: object
+      properties:
+        error:
+          type: string
