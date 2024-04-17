@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_backend/src/core/interfaces/service/encrypt_service.dart';
+import 'package:dart_backend/src/modules/auth/middleware/guard_middleware.dart';
 import 'package:dart_backend/src/modules/user/domain/user.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
@@ -11,11 +12,12 @@ import '../../core/interfaces/database/remote_database.dart';
 class UserResource extends Resource {
   @override
   List<Route> get routes => [
-        Route.get("/user", _getAllUsers),
-        Route.get("/user/:id", _getUser),
+        Route.get("/user", _getAllUsers, middlewares: [GuardMiddleware()]),
+        Route.get("/user/:id", _getUser, middlewares: [GuardMiddleware()]),
         Route.post("/user", _createUser),
-        Route.put("/user", _updateUser),
-        Route.delete("/user/:id", _deleteUser),
+        Route.put("/user", _updateUser, middlewares: [GuardMiddleware()]),
+        Route.delete("/user/:id", _deleteUser,
+            middlewares: [GuardMiddleware()]),
       ];
 }
 
@@ -51,7 +53,7 @@ FutureOr<Response> _createUser(ModularArguments args, Injector injector) async {
 
   final encryptService = injector.get<IEncryptService>();
   data['password'] = encryptService.encrypt(data['password']);
-  
+
   final database = injector.get<IRemoteDatabase>();
   final result = await database.query(
     'insert into "User" (name, email, password, "typeUser") values (@name, @email, @password, @typeUser)',

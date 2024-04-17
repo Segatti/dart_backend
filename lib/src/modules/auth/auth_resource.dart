@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dart_backend/src/core/interfaces/service/encrypt_service.dart';
 import 'package:dart_backend/src/core/interfaces/service/jwt_service.dart';
 import 'package:dart_backend/src/core/service/request_extractor_service.dart';
+import 'package:dart_backend/src/modules/auth/middleware/guard_middleware.dart';
 import 'package:postgres/postgres.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
@@ -14,7 +15,9 @@ class AuthResource extends Resource {
   List<Route> get routes => [
         Route.get("/auth/login", _login),
         Route.get("/auth/refresh_token", _refreshToken),
-        Route.get("/auth/check_token", _checkToken),
+        Route.get("/auth/check_token", _checkToken, middlewares: [
+          GuardMiddleware(),
+        ]),
         Route.post("/auth/update_password", _updatePassword),
       ];
 }

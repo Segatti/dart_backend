@@ -39,12 +39,43 @@ paths:
             application/json:
               schema:
                 $ref: "#components/schemas/BackendException"
+  /auth/check_token:
+    get:
+      tags:
+        - "auth"
+      summary: "Check Bearer Token"
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
 
   /user:
     get:
       tags:
         - "user"
       summary: "Get all users"
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: ""
@@ -86,6 +117,8 @@ paths:
       tags:
         - "user"
       summary: "Update user"
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -109,6 +142,8 @@ paths:
       tags:
         - "user"
       summary: "Get one user"
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -132,6 +167,8 @@ paths:
       tags:
         - "user"
       summary: "Delete one user"
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -157,6 +194,11 @@ components:
     basicAuth:
       type: http
       scheme: basic
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Auth header (Authorization) Access Token"
   schemas:
     Tokenization:
       type: object
