@@ -16,7 +16,7 @@ class EnvService implements IEnvService {
 
     for (var line in fileText.split("\n")) {
       final lineBreak = line.split("=");
-      map[lineBreak[0]] = lineBreak[1];
+      map[lineBreak[0]] = lineBreak[1].trim();
     }
   }
 

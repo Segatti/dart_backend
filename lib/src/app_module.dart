@@ -9,6 +9,7 @@ import 'core/database/postgres_database.dart';
 import 'core/interfaces/database/remote_database.dart';
 import 'core/interfaces/service/env_service.dart';
 import 'core/service/env_service.dart';
+import 'core/service/request_extractor_service.dart';
 import 'modules/auth/auth_resource.dart';
 import 'modules/user/user_resource.dart';
 import 'swagger_handler.dart';
@@ -20,6 +21,7 @@ class AppModule extends Module {
         Bind.singleton<IRemoteDatabase>((i) => PostgresDatabase(i())),
         Bind.singleton<IEncryptService>((i) => EncryptService()),
         Bind.singleton<IJwtService>((i) => JwtService(i())),
+        Bind.singleton<RequestExtractorService>((i) => RequestExtractorService()),
       ];
 
   @override

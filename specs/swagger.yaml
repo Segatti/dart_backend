@@ -7,10 +7,39 @@ servers:
   - url: http://localhost:8080/
     description: Remote server
 tags:
+- name: "auth"
+  description: "Access to auth"
 - name: "user"
   description: "Access to User"
 
 paths:
+  /auth/login:
+    get:
+      tags:
+        - "auth"
+      summary: "Login with credentials (email/password)"
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Tokenization"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+
   /user:
     get:
       tags:
@@ -124,7 +153,18 @@ paths:
                 $ref: "#components/schemas/BackendException"
 
 components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
   schemas:
+    Tokenization:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
     User:
       type: object
       properties:
