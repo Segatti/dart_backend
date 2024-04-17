@@ -68,6 +68,70 @@ paths:
             application/json:
               schema:
                 $ref: "#components/schemas/BackendException"
+  
+  /auth/refresh_token:
+    get:
+      tags:
+        - "auth"
+      summary: "Refresh Bearer Token"
+      security:
+        - bearerRefreshAuth: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Tokenization"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+
+  /auth/update_password:
+    put:
+      tags:
+        - "auth"
+      summary: "Update password User"
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: string
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/BackendException"
 
   /user:
     get:
@@ -123,7 +187,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#components/schemas/User"
+              $ref: "#components/schemas/UserUpdate"
       responses:
         "200":
           description: ""
@@ -199,6 +263,11 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: "Auth header (Authorization) Access Token"
+    bearerRefreshAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Refresh Access Token"
   schemas:
     Tokenization:
       type: object
@@ -229,6 +298,20 @@ components:
         email:
           type: string
         password:
+          type: string
+        typeUser:
+          type: string
+          enum:
+            - "user"
+            - "immobile"
+    UserUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
           type: string
         typeUser:
           type: string

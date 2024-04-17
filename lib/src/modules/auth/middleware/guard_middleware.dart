@@ -7,8 +7,9 @@ import 'package:shelf_modular/shelf_modular.dart';
 
 class GuardMiddleware extends ModularMiddleware {
   final List<String> roles;
+  final bool isRefreshToken;
 
-  const GuardMiddleware({this.roles = const []});
+  const GuardMiddleware({this.roles = const [], this.isRefreshToken = false});
 
   @override
   Handler call(Handler handler, [ModularRoute? route]) {
@@ -24,15 +25,15 @@ class GuardMiddleware extends ModularMiddleware {
 
       final token = extractor.getAuthorizationBearer(request);
       try {
-        jwt.verifyToken(token, "accessToken");
+        jwt.verifyToken(token, isRefreshToken ? "refreshToken" : "accessToken");
         final payload = jwt.getPayload(token);
         final role = payload['typeUser'];
-        if (roles.isEmpty || roles.contains(role)){
+        if (roles.isEmpty || roles.contains(role)) {
           return handler(request);
-        }else{
+        } else {
           return Response.forbidden(jsonEncode(
-          {"error": "userType not authorizated"},
-        ));
+            {"error": "userType not authorizated"},
+          ));
         }
       } catch (e) {
         return Response.forbidden(jsonEncode(

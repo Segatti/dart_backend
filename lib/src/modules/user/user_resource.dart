@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dart_backend/src/core/interfaces/service/encrypt_service.dart';
 import 'package:dart_backend/src/modules/auth/middleware/guard_middleware.dart';
+import 'package:dart_backend/src/modules/user/domain/type_user.dart';
 import 'package:dart_backend/src/modules/user/domain/user.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
@@ -71,10 +72,15 @@ FutureOr<Response> _updateUser(ModularArguments args, Injector injector) async {
   final Map<String, dynamic> data = args.data;
   final id = data['id'];
   data.remove("id");
-  data.remove("userType");
+  data.remove("password");
+
+  if (TypeUser.getEnum(data['typeUser']) == null) return Response.badRequest();
 
   final database = injector.get<IRemoteDatabase>();
-  final List<String> columns = data.keys.map((key) => "$key=@$key").toList();
+  // usar obrigatoriamente "" nas colunas que tem tipos criado com enum
+  // mas não afeta se usar em colunas normais
+  final List<String> columns = data.keys.map((key) => '"$key"=@$key').toList();
+  print(columns);
   final result = await database.query(
     'update "User" set ${columns.join(", ")} where id = @id',
     variables: {
