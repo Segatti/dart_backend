@@ -80,7 +80,6 @@ FutureOr<Response> _updateUser(ModularArguments args, Injector injector) async {
   // usar obrigatoriamente "" nas colunas que tem tipos criado com enum
   // mas não afeta se usar em colunas normais
   final List<String> columns = data.keys.map((key) => '"$key"=@$key').toList();
-  print(columns);
   final result = await database.query(
     'update "User" set ${columns.join(", ")} where id = @id',
     variables: {
